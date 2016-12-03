@@ -41,6 +41,8 @@
 #include "sound.h"
 #include "extra.h"
 
+extern char homepath[256];
+
 /** Actors 3D body table - size of NUM_BODIES */
 uint8 *bodyTable[NUM_BODIES];
 
@@ -70,24 +72,28 @@ void restartHeroScene() {
 }
 
 /** Load hero 3D body and animations */
-void loadHeroEntities() {
-	hqrGetallocEntry(&heroEntityATHLETIC, HQR_FILE3D_FILE, FILE3DHQR_HEROATHLETIC);
+void loadHeroEntities() 
+{
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_FILE3D_FILE);
+	
+	hqrGetallocEntry(&heroEntityATHLETIC, extpath, FILE3DHQR_HEROATHLETIC);
 	sceneHero->entityDataPtr = heroEntityATHLETIC;
 	heroAnimIdxATHLETIC = getBodyAnimIndex(0, 0);
 
-	hqrGetallocEntry(&heroEntityAGGRESSIVE, HQR_FILE3D_FILE, FILE3DHQR_HEROAGGRESSIVE);
+	hqrGetallocEntry(&heroEntityAGGRESSIVE, extpath, FILE3DHQR_HEROAGGRESSIVE);
 	sceneHero->entityDataPtr = heroEntityAGGRESSIVE;
 	heroAnimIdxAGGRESSIVE = getBodyAnimIndex(0, 0);
 
-	hqrGetallocEntry(&heroEntityDISCRETE, HQR_FILE3D_FILE, FILE3DHQR_HERODISCRETE);
+	hqrGetallocEntry(&heroEntityDISCRETE, extpath, FILE3DHQR_HERODISCRETE);
 	sceneHero->entityDataPtr = heroEntityDISCRETE;
 	heroAnimIdxDISCRETE = getBodyAnimIndex(0, 0);
 
-	hqrGetallocEntry(&heroEntityPROTOPACK, HQR_FILE3D_FILE, FILE3DHQR_HEROPROTOPACK);
+	hqrGetallocEntry(&heroEntityPROTOPACK, extpath, FILE3DHQR_HEROPROTOPACK);
 	sceneHero->entityDataPtr = heroEntityPROTOPACK;
 	heroAnimIdxPROTOPACK = getBodyAnimIndex(0, 0);
 
-	hqrGetallocEntry(&heroEntityNORMAL, HQR_FILE3D_FILE, FILE3DHQR_HERONORMAL);
+	hqrGetallocEntry(&heroEntityNORMAL, extpath, FILE3DHQR_HERONORMAL);
 	sceneHero->entityDataPtr = heroEntityNORMAL;
 	heroAnimIdxNORMAL = getBodyAnimIndex(0, 0);
 

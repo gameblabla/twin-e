@@ -49,6 +49,7 @@
 #include "interface.h"
 #include "holomap.h"
 
+extern char homepath[256];
 
 uint8 *scriptPtr; // local script pointer
 uint8 *opcodePtr; // local opcode script pointer
@@ -1249,8 +1250,10 @@ int32 lFADE_PAL_RED(int32 actorIdx, ActorStruct *actor) {
 
 /*0x53*/
 int32 lFADE_ALARM_RED(int32 actorIdx, ActorStruct *actor) {
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
 	freezeTime();
-	hqrGetEntry(palette, HQR_RESS_FILE, RESSHQR_ALARMREDPAL);
+	hqrGetEntry(palette, extpath, RESSHQR_ALARMREDPAL);
 	convertPalToRGBA(palette, paletteRGBA);
 	fadePalRed(paletteRGBA);
 	useAlternatePalette = 1;
@@ -1260,8 +1263,10 @@ int32 lFADE_ALARM_RED(int32 actorIdx, ActorStruct *actor) {
 
 /*0x54*/
 int32 lFADE_ALARM_PAL(int32 actorIdx, ActorStruct *actor) {
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
 	freezeTime();
-	hqrGetEntry(palette, HQR_RESS_FILE, RESSHQR_ALARMREDPAL);
+	hqrGetEntry(palette, extpath, RESSHQR_ALARMREDPAL);
 	convertPalToRGBA(palette, paletteRGBA);
 	adjustCrossPalette(paletteRGBA, mainPaletteRGBA);
 	useAlternatePalette = 0;
@@ -1280,8 +1285,10 @@ int32 lFADE_RED_PAL(int32 actorIdx, ActorStruct *actor) {
 
 /*0x56*/
 int32 lFADE_RED_ALARM(int32 actorIdx, ActorStruct *actor) {
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
 	freezeTime();
-	hqrGetEntry(palette, HQR_RESS_FILE, RESSHQR_ALARMREDPAL);
+	hqrGetEntry(palette, extpath, RESSHQR_ALARMREDPAL);
 	convertPalToRGBA(palette, paletteRGBA);
 	fadeRedPal(paletteRGBA);
 	useAlternatePalette = 1;
@@ -1291,8 +1298,10 @@ int32 lFADE_RED_ALARM(int32 actorIdx, ActorStruct *actor) {
 
 /*0x57*/
 int32 lFADE_PAL_ALARM(int32 actorIdx, ActorStruct *actor) {
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
 	freezeTime();
-	hqrGetEntry(palette, HQR_RESS_FILE, RESSHQR_ALARMREDPAL);
+	hqrGetEntry(palette, extpath, RESSHQR_ALARMREDPAL);
 	convertPalToRGBA(palette, paletteRGBA);
 	adjustCrossPalette(mainPaletteRGBA, paletteRGBA);
 	useAlternatePalette = 1;
@@ -1343,8 +1352,10 @@ int32 lASK_CHOICE_OBJ(int32 actorIdx, ActorStruct *actor) {
 
 /*0x5C*/
 int32 lSET_DARK_PAL(int32 actorIdx, ActorStruct *actor) {
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
 	freezeTime();
-	hqrGetEntry(palette, HQR_RESS_FILE, RESSHQR_DARKPAL);
+	hqrGetEntry(palette, extpath, RESSHQR_DARKPAL);
 	if (!lockPalette) {
 		convertPalToRGBA(palette, paletteRGBA);
 		setPalette(paletteRGBA);

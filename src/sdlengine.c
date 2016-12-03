@@ -53,6 +53,8 @@
 #include "keyboard.h"
 #include "redraw.h"
 
+extern char homepath[256];
+
 /** SDL exit callback */
 //static void atexit_callback(void);
 
@@ -126,7 +128,9 @@ int sdlInitialize() {
 		exit(1);
 	}
 
-	font = TTF_OpenFont("FreeMono.ttf", 12);
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, "FreeMono.ttf");
+	font = TTF_OpenFont(extpath, 12);
 
 	if (font == NULL) {
 		fprintf(stderr, "Couldn't load %d pt font from %s: %s\n", 12, "FreeMono.ttf", SDL_GetError());

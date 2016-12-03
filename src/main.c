@@ -51,6 +51,8 @@
 #include "sound.h"
 #include "fcaseopen.h"
 
+char homepath[256];
+
 /** Engine current version */
 const int8* ENGINE_VERSION = (int8*) "0.2.0";
 
@@ -201,8 +203,10 @@ void initConfigurations() {
 	FILE *fd, *fd_test;
 	int8 buffer[256], tmp[16];
 	int32 cfgtype = -1;
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, CONFIG_FILENAME);
 
-	fd = fcaseopen(CONFIG_FILENAME, "rb");
+	fd = fcaseopen(extpath, "rb");
 	if (!fd)
 		printf("Error: Can't find config file %s\n", CONFIG_FILENAME);
 
@@ -233,8 +237,11 @@ void initConfigurations() {
 				break;
 			case 8:
 				sscanf(buffer, "MidiType: %s", tmp);
-				if (strcmp(tmp, "auto") == 0) {
-					fd_test = fcaseopen(HQR_MIDI_MI_WIN_FILE, "rb");
+				if (strcmp(tmp, "auto") == 0) 
+				{
+					char extpath[256];
+					snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_MIDI_MI_WIN_FILE);
+					fd_test = fcaseopen(extpath, "rb");
 					if (fd_test) {
 						fclose(fd_test);
 						cfgfile.MidiType = 1;
@@ -423,6 +430,9 @@ void initAll() {
 	@param argc numner of arguments
 	@param argv array with all arguments strings */
 int main(int argc, char *argv[]) {
+	snprintf(homepath, sizeof(homepath), "%s/.lba", getenv("HOME"));
+	mkdir(homepath, 0755);
+	
 	initAll();
 	initEngine();
 	sdlClose();

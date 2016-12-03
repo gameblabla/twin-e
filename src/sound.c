@@ -47,6 +47,8 @@ Mix_Chunk *sample;
 
 int32 channelIdx = -1;
 
+extern char homepath[256];
+
 /** Sample volume
 	@param channel sample channel
 	@param volume sample volume number */
@@ -68,8 +70,11 @@ void playFlaSample(int32 index, int32 frequency, int32 repeat, int32 x, int32 y)
 		uint8* sampPtr;
 
 		sprintf(sampfile, FLA_DIR "%s",HQR_FLASAMP_FILE);
+		
+		char extpath[256];
+		snprintf(extpath, sizeof(extpath), "%s/%s", homepath, sampfile);
 
-		sampSize = hqrGetallocEntry(&sampPtr, sampfile, index);
+		sampSize = hqrGetallocEntry(&sampPtr, extpath, index);
 
 		// Fix incorrect sample files first byte
 		if (*sampPtr != 'C')
@@ -113,13 +118,18 @@ void setSamplePosition(int32 channelIdx, int32 x, int32 y, int32 z) {
 	@param x unknown x variable
 	@param y unknown y variable
 	@param z unknown z variable */
-void playSample(int32 index, int32 frequency, int32 repeat, int32 x, int32 y, int32 z, int32 actorIdx) {
-	if (cfgfile.Sound) {
+void playSample(int32 index, int32 frequency, int32 repeat, int32 x, int32 y, int32 z, int32 actorIdx) 
+{
+	if (cfgfile.Sound) 
+	{
+		char extpath[256];
+		snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_SAMPLES_FILE);
+		
 		int32 sampSize = 0;
 		SDL_RWops *rw;
 		uint8* sampPtr;
 
-		sampSize = hqrGetallocEntry(&sampPtr, HQR_SAMPLES_FILE, index);
+		sampSize = hqrGetallocEntry(&sampPtr, extpath, index);
 
 		// Fix incorrect sample files first byte
 		if (*sampPtr != 'C')

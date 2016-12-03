@@ -41,6 +41,8 @@
 #include "resources.h"
 #include "xmidi.h"
 
+extern char homepath[256];
+
 /** MP3 music folder */
 #define MUSIC_FOLDER	"music"
 /** LBA1 default number of tracks */
@@ -138,6 +140,7 @@ void stopTrackMusic() {
 /** Play MIDI music
 	@param midiIdx music index under mini_mi_win.hqr*/
 void playMidiMusic(int32 midiIdx, int32 loop) {
+	char extpath[256];
 	uint8* dos_midi_ptr;
 	int32 midiSize;
 	int8 filename[256];
@@ -155,9 +158,16 @@ void playMidiMusic(int32 midiIdx, int32 loop) {
 	currentMusic = midiIdx;
 
 	if (cfgfile.MidiType == 0)
-		sprintf(filename, "%s", HQR_MIDI_MI_DOS_FILE);
+	{
+		snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_MIDI_MI_DOS_FILE);
+	}
 	else
-		sprintf(filename, "%s", HQR_MIDI_MI_WIN_FILE);
+	{
+		snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_MIDI_MI_WIN_FILE);
+	}
+	
+	sprintf(filename, "%s", extpath);
+	
 
 	if (midiPtr) {
 		musicFadeOut(FADE_MS / 2);

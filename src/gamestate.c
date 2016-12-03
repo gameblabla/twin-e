@@ -43,6 +43,8 @@
 #include "menuoptions.h"
 #include "collision.h"
 
+extern char homepath[256];
+
 #define SAVE_DIR "save/"
 
 int32 magicLevelStrengthOfHit[] = {
@@ -472,6 +474,10 @@ void processGameChoices(int32 choiceIdx) {
 }
 
 void processGameoverAnimation() { // makeGameOver
+	
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
+	
 	int32 tmpLbaTime, startLbaTime;
 	uint8 *gameOverPtr;
 
@@ -485,8 +491,8 @@ void processGameoverAnimation() { // makeGameOver
 	// TODO: drawInGameTransBox
 	setPalette(paletteRGBA);
 	copyScreen(frontVideoBuffer, workVideoBuffer);
-	gameOverPtr = malloc(hqrEntrySize(HQR_RESS_FILE, RESSHQR_GAMEOVERMDL));
-	hqrGetEntry(gameOverPtr, HQR_RESS_FILE, RESSHQR_GAMEOVERMDL);
+	gameOverPtr = malloc(hqrEntrySize(extpath, RESSHQR_GAMEOVERMDL));
+	hqrGetEntry(gameOverPtr, extpath, RESSHQR_GAMEOVERMDL);
 
 	if (gameOverPtr) {
 		int32 avg, cdot;

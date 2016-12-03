@@ -35,6 +35,7 @@
 #include "hqrdepack.h"
 #include "lbaengine.h"
 
+extern char homepath[256];
 
 /** Load and display Adeline Logo */
 void adelineLogo() {
@@ -48,7 +49,9 @@ void adelineLogo() {
 
 /** Load and display Main Menu image */
 void loadMenuImage(int16 fade_in) {
-	hqrGetEntry(workVideoBuffer, HQR_RESS_FILE, RESSHQR_MENUIMG);
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
+	hqrGetEntry(workVideoBuffer, extpath, RESSHQR_MENUIMG);
 	copyScreen(workVideoBuffer, frontVideoBuffer);
 	if (fade_in) {
 		fadeToPal(paletteRGBA);
@@ -61,14 +64,18 @@ void loadMenuImage(int16 fade_in) {
 
 /** Load a custom palette */
 void loadCustomPalette(int32 index) {
-	hqrGetEntry(palette, HQR_RESS_FILE, index);
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
+	hqrGetEntry(palette, extpath, index);
 	convertPalToRGBA(palette, paletteRGBACustom);
 }
 
 /** Load and display a particulary image on \a RESS.HQR file with cross fade effect
 	@param index \a RESS.HQR entry index (starting from 0) */
 void loadImage(int32 index, int16 fade_in) {
-	hqrGetEntry(workVideoBuffer, HQR_RESS_FILE, index);
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
+	hqrGetEntry(workVideoBuffer, extpath, index);
 	copyScreen(workVideoBuffer, frontVideoBuffer);
 	loadCustomPalette(index + 1);
 	if (fade_in) {

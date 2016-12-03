@@ -47,6 +47,8 @@
 #include "grid.h"
 #include "gamestate.h"
 
+extern char homepath[256];
+
 /** Main menu background image number
 	Used when returning from credit sequence to redraw the main menu background image */
 uint32 kPlasmaEffectFilesize = 262176;
@@ -756,6 +758,8 @@ int32 optionsMenu() {
 
 /** Used to run the main menu */
 void mainMenu() {
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
 	stopSamples();
 
 	copyScreen(frontVideoBuffer, workVideoBuffer);
@@ -763,7 +767,7 @@ void mainMenu() {
 	// load menu effect file only once
 	plasmaEffectPtr = (uint8 *)malloc(kPlasmaEffectFilesize);
 	memset(plasmaEffectPtr, 0, kPlasmaEffectFilesize);
-	hqrGetEntry(plasmaEffectPtr, HQR_RESS_FILE, RESSHQR_PLASMAEFFECT);
+	hqrGetEntry(plasmaEffectPtr, extpath, RESSHQR_PLASMAEFFECT);
 
 	while (!cfgfile.Quit) {
 		initTextBank(0);

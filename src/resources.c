@@ -31,6 +31,8 @@
 #include "sdlengine.h"
 #include "sound.h"
 
+extern char homepath[256];
+
 int8 * HQR_RESS_FILE			= "ress.hqr";
 int8 * HQR_TEXT_FILE			= "text.hqr";
 int8 * HQR_FLASAMP_FILE			= "flasamp.hqr";
@@ -50,9 +52,13 @@ int8 * HQR_ANIM_FILE			= "anim.hqr";
 int8 * HQR_INVOBJ_FILE			= "invobj.hqr";
 
 /** Init palettes */
-void initPalettes() {
+void initPalettes() 
+{
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_RESS_FILE);
 	// Init standard palette
-	hqrGetallocEntry(&mainPalette, HQR_RESS_FILE, RESSHQR_MAINPAL);
+	hqrGetallocEntry(&mainPalette, extpath, RESSHQR_MAINPAL);
+	//hqrGetallocEntry(&mainPalette, HQR_RESS_FILE, RESSHQR_MAINPAL);
 	convertPalToRGBA(mainPalette, mainPaletteRGBA);
 	
 	memcpy(palette, mainPalette, NUMOFCOLORS * 3);
@@ -67,59 +73,71 @@ void initPalettes() {
 /** Preload all sprites */
 void preloadSprites() {
 	int32 i;
-	int32 numEntries = hqrNumEntries(HQR_SPRITES_FILE) - 1;
-
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_SPRITES_FILE);
+	int32 numEntries = hqrNumEntries(extpath) - 1;
+	
 	for (i = 0; i < numEntries; i++) {
-		spriteSizeTable[i] = hqrGetallocEntry(&spriteTable[i], HQR_SPRITES_FILE, i);
+		spriteSizeTable[i] = hqrGetallocEntry(&spriteTable[i], extpath, i);
 	}
 }
 
 /** Preload all animations */
 void preloadAnimations() {
 	int32 i;
-	int32 numEntries = hqrNumEntries(HQR_ANIM_FILE) - 1;
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_ANIM_FILE);
+	int32 numEntries = hqrNumEntries(extpath) - 1;
 
 	for (i = 0; i < numEntries; i++) {
-		animSizeTable[i] = hqrGetallocEntry(&animTable[i], HQR_ANIM_FILE, i);
+		animSizeTable[i] = hqrGetallocEntry(&animTable[i], extpath, i);
 	}
 }
 
 /** Preload all animations */
 void preloadSamples() {
 	int32 i;
-	int32 numEntries = hqrNumEntries(HQR_SAMPLES_FILE) - 1;
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_SAMPLES_FILE);
+	int32 numEntries = hqrNumEntries(extpath) - 1;
 
 	for (i = 0; i < numEntries; i++) {
-		samplesSizeTable[i] = hqrGetallocEntry(&samplesTable[i], HQR_SAMPLES_FILE, i);
+		samplesSizeTable[i] = hqrGetallocEntry(&samplesTable[i], extpath, i);
 	}
 }
 
 /** Preload all animations */
 void preloadInventoryItems() {
 	int32 i;
-	int32 numEntries = hqrNumEntries(HQR_INVOBJ_FILE) - 1;
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_INVOBJ_FILE);
+	int32 numEntries = hqrNumEntries(extpath) - 1;
 
 	for (i = 0; i < numEntries; i++) {
-		inventorySizeTable[i] = hqrGetallocEntry(&inventoryTable[i], HQR_INVOBJ_FILE, i);
+		inventorySizeTable[i] = hqrGetallocEntry(&inventoryTable[i], extpath, i);
 	}
 }
 
 /** Initialize resource pointers */
-void initResources() {
+void initResources() 
+{
+	char ress[256];
+	snprintf(ress, sizeof(ress), "%s/%s", homepath, HQR_RESS_FILE);
+	
 	// Menu and in-game palette
 	initPalettes();
 
 	// load LBA font
-	hqrGetallocEntry(&fontPtr, HQR_RESS_FILE, RESSHQR_LBAFONT);
+	hqrGetallocEntry(&fontPtr, ress, RESSHQR_LBAFONT);
 
 	setFontParameters(2, 8);
 	setFontColor(14);
 	setTextCrossColor(136, 143, 2);
 
-	hqrGetallocEntry(&spriteShadowPtr, HQR_RESS_FILE, RESSHQR_SPRITESHADOW);
+	hqrGetallocEntry(&spriteShadowPtr, ress, RESSHQR_SPRITESHADOW);
 
 	// load sprite actors bounding box data
-	hqrGetallocEntry(&spriteBoundingBoxPtr, HQR_RESS_FILE, RESSHQR_SPRITEBOXDATA);
+	hqrGetallocEntry(&spriteBoundingBoxPtr, ress, RESSHQR_SPRITEBOXDATA);
 
 	preloadSprites();
 	preloadAnimations();

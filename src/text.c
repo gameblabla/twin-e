@@ -39,6 +39,8 @@
 #include "renderer.h"
 #include "sound.h"
 
+extern char homepath[256];
+
 // RECHECK THIS LATER
 int32 currentBankIdx = -1; // textVar1
 uint8 textVar2[256];
@@ -89,10 +91,14 @@ int8 * LanguageSufixTypes[] = {
 };
 
 
-void initVoxBank(int32 bankIdx) {
+void initVoxBank(int32 bankIdx) 
+{
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, VOX_DIR);
+	
 	// get the correct vox hqr file
 	memset(currentVoxBankFile, 0, sizeof(int8));
-	sprintf(currentVoxBankFile, VOX_DIR);
+	sprintf(currentVoxBankFile, "%s", extpath);
 	strcat(currentVoxBankFile, LanguagePrefixTypes[cfgfile.LanguageId]);
 	strcat(currentVoxBankFile, LanguageSufixTypes[bankIdx]);
 	strcat(currentVoxBankFile, VOX_EXT);
@@ -162,6 +168,9 @@ void stopVox(int32 index) {
 void initTextBank(int32 bankIdx) { // InitDial
 	int32 langIdx;
 	int32 hqrSize;
+	
+	char extpath[256];
+	snprintf(extpath, sizeof(extpath), "%s/%s", homepath, HQR_TEXT_FILE);
 
 	// don't load if we already have the dialogue text bank loaded
 	if (bankIdx == currentBankIdx)
@@ -174,11 +183,11 @@ void initTextBank(int32 bankIdx) { // InitDial
 	// get index according with language
 	langIdx = (cfgfile.LanguageId * 14) * 2  + bankIdx * 2;
 
-	hqrSize = hqrGetallocEntry(&dialOrderPtr, HQR_TEXT_FILE, langIdx);
+	hqrSize = hqrGetallocEntry(&dialOrderPtr, extpath, langIdx);
 
 	numDialTextEntries = hqrSize / 2;
 
-	hqrSize = hqrGetallocEntry(&dialTextPtr, HQR_TEXT_FILE, ++langIdx);
+	hqrSize = hqrGetallocEntry(&dialTextPtr, extpath, ++langIdx);
 
 	if (cfgfile.LanguageCDId) {
 		initVoxBank(bankIdx);
